@@ -1,23 +1,24 @@
-import logo from './logo.svg';
+import CG-logo from './src/CG-logo.png';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+        <form>
+            <img src={logo} alt='' className="cg-logo" />
+            <input 
+              type = "text"
+              value = ""
+              placeholder = "Ask anything... :)"
+            />
+            <button type="submit">Ask</button>
+         </form>
+
+         <p className="responserArea">
+            Here will be response from AI...
+         </p>
+
+         <div className="footer">~ Rikshit-Development ~</div>
     </div>
   );
 }
