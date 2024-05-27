@@ -1,26 +1,27 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 
 import CGlogo from './CGlogo.png'; 
 import './App.css';
 
 function App() {
-  const {prompt, setPrompt} = useState('');
-  const {response, setResponse} = useState('');
-  const {loading, setLoading} = useState(false);
+  const [prompt, setPrompt] = useState('');
+  const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
       e.preventDefault();
       setLoading(true);
 
-      axios.post("http://localhost:3000/chat", {prompt})
-      .then((res) => {
-        setResponse(res.data);
-        setLoading(false);
-      })
+      axios.post("http://localhost:3000/chat", { prompt })
+        .then((res) => {
+          setResponse(res.data);
+          setLoading(false);
+        })
       .catch((err) => {
-        console.error(err);
-      })
+        console.error('Axios error:', err); // Log error details for debugging
+        setLoading(false); // Reset loading state even on error
+      });
   }
 
   return (
