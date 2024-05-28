@@ -2,41 +2,43 @@ const express = require("express");
 require('dotenv').config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const {Configuration, OpenAIApi} = require("openai");
+const axios = require("axios");
 
-// Set up the server ###
-
+// Initialize the Express app
 const app = express();
 
+// Middleware setup
 app.use(bodyParser.json());
-
 app.use(cors());
 
-// Set Up API end point
-
-const configuration = new Configuration({
-    apikey : process.env.CHATBOT_KEY,
-});
-
-
-const openai = new OpenAIApi(configuration);
-
+// POST endpoint
 app.post("/chat", async (req, res) => {
-    const {prompt} = req.body;
-
-    const completion = await openai.createCompletion({
-        model : "gpt-3.5-turbo-0125",
-        prompt : prompt,
+  try {
+    const { prompt } = req.body;
+    const response = await axios.post(
+      "https://api.openai.com/v1/engines/davinci-002/completions",
+      {
+        prompt: prompt,
         max_tokens: 2048,
-    });
-
-    res.send(completion.data.choices[0].text);
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.CHATBOT_KEY}`,
+        },
+      }
+    );
+    res.send(response.data.choices[0].text);
+  } catch (error) {
+    console.error("Error with OpenAI API request:", error.response ? error.response.data : error.message);
+    res.status(500).send("Error with OpenAI API request");
+  }
 });
 
-const port = 3000;
 
+// Start the server
+const port = 5000;
 app.listen(port, () => {
-    console.log(`Server Listening on Port : ${port}`);
-    console.log(`http://localhost:${port}}`);
-}); 
-
+  console.log(`Server listening on port ${port}`);
+  console.log(`http://localhost:${port}`);
+});

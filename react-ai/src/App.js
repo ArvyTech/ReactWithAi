@@ -13,7 +13,7 @@ function App() {
       e.preventDefault();
       setLoading(true);
 
-      axios.post("http://localhost:3000/chat", { prompt })
+      axios.post("http://localhost:5000/chat", { prompt })
         .then((res) => {
           setResponse(res.data);
           setLoading(false);
